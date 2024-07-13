@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ppang_juseyo/pages/menu_page.dart';
-import 'package:ppang_juseyo/pages/register_page.dart';
+import 'package:ppang_juseyo/pages/login_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  String username = "";
+class _RegisterPageState extends State<RegisterPage> {
+  String name = "";
+  String email = "";
+  String phone = "";
   String password = "";
 
   @override
@@ -20,8 +22,11 @@ class _LoginPageState extends State<LoginPage> {
       // Set background image using DecorationImage
       body: Container(
         decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("images/bg1.jpg"), fit: BoxFit.cover)),
+          image: DecorationImage(
+            image: AssetImage("images/bg1.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Center(
           // Center the content horizontally and vertically
           child: Column(
@@ -36,13 +41,12 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 50,
-                    ),
+                    SizedBox(height: 50),
                     Text(
                       "Welcome",
                       style: GoogleFonts.yeonSung(
-                          textStyle: TextStyle(fontSize: 36)),
+                        textStyle: TextStyle(fontSize: 36),
+                      ),
                     ),
                     Text(
                       "Ppang Juseyo",
@@ -50,17 +54,15 @@ class _LoginPageState extends State<LoginPage> {
                         textStyle: TextStyle(fontSize: 36),
                       ),
                     ),
-                    SizedBox(
-                      height: 100,
-                    ),
+                    SizedBox(height: 20),
 
-                    // Username Input Field
+                    // Name Input Field
                     SizedBox(
                       width: 330.0,
-                      height: 60.0, // Set width to 200 pixels
+                      height: 60.0,
                       child: TextField(
                         decoration: InputDecoration(
-                          labelText: "Email / Number Phone",
+                          labelText: "Name",
                           filled: true,
                           fillColor: Color(int.parse('0xffF4F1F1')),
                           border: OutlineInputBorder(
@@ -70,17 +72,64 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         onChanged: (value) {
-                          // Update username when the text changes
                           setState(() {
-                            username = value;
+                            name = value;
                           });
                         },
                       ),
                     ),
 
+                    SizedBox(height: 20),
+
+                    // Email Input Field
                     SizedBox(
-                      height: 20,
+                      width: 330.0,
+                      height: 60.0,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          filled: true,
+                          fillColor: Color(int.parse('0xffF4F1F1')),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide:
+                                BorderSide.none, // Set the radius to 15 pixels
+                          ),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            email = value;
+                          });
+                        },
+                      ),
                     ),
+
+                    SizedBox(height: 20),
+
+                    // Phone Input Field
+                    SizedBox(
+                      width: 330.0,
+                      height: 60.0,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: "Phone",
+                          filled: true,
+                          fillColor: Color(int.parse('0xffF4F1F1')),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide:
+                                BorderSide.none, // Set the radius to 15 pixels
+                          ),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            phone = value;
+                          });
+                        },
+                      ),
+                    ),
+
+                    SizedBox(height: 20),
 
                     // Password Input Field
                     SizedBox(
@@ -99,7 +148,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         obscureText: true, // Hide password characters
                         onChanged: (value) {
-                          // Update password when the text changes
                           setState(() {
                             password = value;
                           });
@@ -107,28 +155,28 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
 
-                    SizedBox(
-                      height: 100.0,
-                    ),
+                    SizedBox(height: 20),
 
                     ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MenuPage()),
-                          );
-                        },
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.black),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                            fixedSize: Size(330, 30),
-                            backgroundColor: Color(int.parse('0xffd9d9d9')))),
-                    SizedBox(
-                      height: 50,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        );
+                      },
+                      child: const Text(
+                        'Register',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.black),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(330, 30),
+                        backgroundColor: Color(int.parse('0xffd9d9d9')),
+                      ),
                     ),
+
+                    SizedBox(height: 50),
+
                     Center(
                       child: Text(
                         "OR",
@@ -136,15 +184,15 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
-                    SizedBox(
-                      height: 40,
-                    ),
+
+                    SizedBox(height: 40),
+
                     RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Belum punya akun? ',
+                            text: 'Sudah punya akun? ',
                             style: TextStyle(fontWeight: FontWeight.normal),
                           ),
                           WidgetSpan(
@@ -153,12 +201,12 @@ class _LoginPageState extends State<LoginPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => RegisterPage(),
+                                    builder: (context) => LoginPage(),
                                   ),
                                 );
                               },
                               child: Text(
-                                'Sign Up',
+                                'Login',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black, // Link color

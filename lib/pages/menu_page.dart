@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'menu_by_category_page.dart';
+
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
 
@@ -162,43 +164,56 @@ class _MenuPageState extends State<MenuPage> {
                         ),
                         itemCount: categories.length,
                         itemBuilder: (context, index) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: Color(int.parse('0xffDD8383')),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: Stack(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.network(
-                                    categories[index].image,
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: double.infinity,
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MenuByCategoryPage(
+                                    categoryId: categories[index].id,
                                   ),
                                 ),
-                                Positioned(
-                                  bottom: 25.0,
-                                  left: 20.0,
-                                  right: 20.0,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10.0),
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Color(int.parse('0xffDD8383')),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.network(
+                                      categories[index].image,
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      height: double.infinity,
                                     ),
-                                    child: Center(
-                                      child: Text(
-                                        categories[index].name.toUpperCase(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
+                                  ),
+                                  Positioned(
+                                    bottom: 25.0,
+                                    left: 20.0,
+                                    right: 20.0,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          categories[index].name.toUpperCase(),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },
