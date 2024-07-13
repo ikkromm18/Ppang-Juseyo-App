@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -8,7 +10,45 @@ class MenuPage extends StatefulWidget {
   State<MenuPage> createState() => _MenuPageState();
 }
 
+class FoodCategory {
+  final String id;
+  final String name;
+  final String image;
+
+  FoodCategory({required this.id, required this.name, required this.image});
+
+  factory FoodCategory.fromJson(Map<String, dynamic> json) {
+    return FoodCategory(
+      id: json['id'],
+      name: json['name'],
+      image: json['image'],
+    );
+  }
+}
+
 class _MenuPageState extends State<MenuPage> {
+  late Future<List<FoodCategory>> futureCategories;
+
+  @override
+  void initState() {
+    super.initState();
+    futureCategories = fetchFoodCategories();
+  }
+
+  Future<List<FoodCategory>> fetchFoodCategories() async {
+    final response = await http
+        .get(Uri.parse('http://ppangjuseyo.agsa.site/api/category/get'));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body);
+      List<FoodCategory> categories =
+          data.map((json) => FoodCategory.fromJson(json)).toList();
+      return categories;
+    } else {
+      throw Exception('Failed to load food categories');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +107,7 @@ class _MenuPageState extends State<MenuPage> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
-                          "What Would Your Like To Eat",
+                          "What Would You Like To Eat",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 23,
@@ -101,105 +141,74 @@ class _MenuPageState extends State<MenuPage> {
                 ),
               ),
               SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              height: 180.0,
-                              decoration: BoxDecoration(
-                                color: Color(int.parse('0xffDD8383')),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              child: Stack(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(
-                                      "images/Menu/donut.png",
-                                    ),
+
+              // Menampilkan data dari API menggunakan FutureBuilder dan GridView.builder
+              FutureBuilder<List<FoodCategory>>(
+                future: futureCategories,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<FoodCategory> categories = snapshot.data!;
+                    return Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10.0,
+                          mainAxisSpacing: 10.0,
+                          childAspectRatio:
+                              1, // Adjust the aspect ratio as needed
+                        ),
+                        itemCount: categories.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: Color(int.parse('0xffDD8383')),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.network(
+                                    categories[index].image,
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: double.infinity,
                                   ),
-                                  Positioned(
-                                    bottom: 25.0,
-                                    left: 50.0,
-                                    child: Container(
-                                      width: 100.0,
-                                      height: 25.0,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "DONUT",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                          ),
+                                ),
+                                Positioned(
+                                  bottom: 25.0,
+                                  left: 20.0,
+                                  right: 20.0,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        categories[index].name.toUpperCase(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
                                         ),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              height: 180.0,
-                              decoration: BoxDecoration(
-                                color: Color(int.parse('0xffDD8383')),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              height: 180.0,
-                              decoration: BoxDecoration(
-                                color: Color(int.parse('0xffDD8383')),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              height: 180.0,
-                              decoration: BoxDecoration(
-                                color: Color(int.parse('0xffDD8383')),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                          );
+                        },
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text("${snapshot.error}"));
+                  }
+                  return Center(child: CircularProgressIndicator());
+                },
               ),
             ],
           ),
