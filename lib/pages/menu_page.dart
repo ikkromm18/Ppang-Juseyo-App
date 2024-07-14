@@ -171,6 +171,7 @@ class _MenuPageState extends State<MenuPage> {
                                 MaterialPageRoute(
                                   builder: (context) => MenuByCategoryPage(
                                     categoryId: categories[index].id,
+                                    categoryName: categories[index].name,
                                   ),
                                 ),
                               );
