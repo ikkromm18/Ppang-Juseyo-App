@@ -17,7 +17,7 @@ class _LandingPageState extends State<LandingPage> {
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("images/bg1.jpg"), fit: BoxFit.cover)),
+                image: AssetImage("assets/images/bg1.jpg"), fit: BoxFit.cover)),
         child: Center(
           // Center the content horizontally and vertically
           child: Column(
