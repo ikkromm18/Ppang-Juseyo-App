@@ -65,7 +65,7 @@ class _MenuPageState extends State<MenuPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'images/logo1.png',
+                      'assets/images/logo1.png',
                       width: 40.0,
                       height: 50.0,
                     ),
@@ -123,7 +123,7 @@ class _MenuPageState extends State<MenuPage> {
                     child: FittedBox(
                       fit: BoxFit.cover,
                       child: Image.asset(
-                        "images/awalan1.png",
+                        "assets/images/awalan1.png",
                         width: MediaQuery.of(context).size.width * 0.5,
                         height: 150.0,
                       ),
