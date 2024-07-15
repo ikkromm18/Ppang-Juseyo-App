@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:ppang_juseyo/pages/transaksi_page.dart';
+import 'package:ppang_juseyo/models/selected_product.dart';
 
 class MenuByCategoryPage extends StatefulWidget {
   final String categoryId;
@@ -17,7 +18,7 @@ class MenuByCategoryPage extends StatefulWidget {
 class Product {
   final String id;
   final String product;
-  final String price;
+  final double price;
   final String qty;
   final String image;
 
@@ -33,7 +34,7 @@ class Product {
     return Product(
       id: json['id'],
       product: json['product'],
-      price: json['price'],
+      price: double.parse(json['price']),
       qty: json['qty'],
       image: json['image'],
     );
@@ -107,9 +108,6 @@ class _MenuByCategoryPageState extends State<MenuByCategoryPage> {
       ),
       body: Stack(
         children: [
-          SizedBox(
-            height: 20.0,
-          ),
           FutureBuilder<List<Product>>(
             future: futureProducts,
             builder: (context, snapshot) {
@@ -209,26 +207,48 @@ class _MenuByCategoryPageState extends State<MenuByCategoryPage> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons.remove,
-                                                      size: 14,
-                                                    ),
-                                                    onPressed: () =>
+                                                  GestureDetector(
+                                                    onTap: () =>
                                                         _decrementCount(index),
-                                                  ),
-                                                  Text(
-                                                    "${productCounts[index]}",
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons.add,
-                                                      size: 14,
+                                                    child: Container(
+                                                      width: 25,
+                                                      height: 25,
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Icon(
+                                                        Icons.remove,
+                                                        size: 14,
+                                                      ),
                                                     ),
-                                                    onPressed: () =>
+                                                  ),
+                                                  Container(
+                                                    width: 30.0,
+                                                    height: 30.0,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        "${productCounts[index]}",
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () =>
                                                         _incrementCount(index),
+                                                    child: Container(
+                                                      width: 25,
+                                                      height: 25,
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Icon(
+                                                        Icons.add,
+                                                        size: 14,
+                                                      ),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -260,12 +280,29 @@ class _MenuByCategoryPageState extends State<MenuByCategoryPage> {
             right: 20,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TransaksiPage(),
-                  ),
-                );
+                List<SelectedProduct> selectedProducts = [];
+                futureProducts.then((products) {
+                  for (int i = 0; i < products.length; i++) {
+                    if (productCounts[i] > 0) {
+                      selectedProducts.add(
+                        SelectedProduct(
+                          image: products[i].image,
+                          product: products[i].product,
+                          qty: productCounts[i],
+                          price: products[i].price,
+                        ),
+                      );
+                    }
+                  }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TransaksiPage(
+                        selectedProducts: selectedProducts,
+                      ),
+                    ),
+                  );
+                });
               },
               child: Text(
                 'Buy Now',
