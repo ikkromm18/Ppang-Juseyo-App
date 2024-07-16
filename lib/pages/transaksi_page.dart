@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ppang_juseyo/models/selected_product.dart';
+import 'package:ppang_juseyo/pages/opsi_pembayaran.dart';
 
 class TransaksiPage extends StatelessWidget {
   final List<SelectedProduct> selectedProducts;
@@ -203,7 +204,11 @@ class TransaksiPage extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Handle Bayar Sekarang action
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OpsiPembayaranPage()),
+                        );
                       },
                       child: Text(
                         'Bayar Sekarang',

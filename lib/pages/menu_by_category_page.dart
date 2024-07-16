@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:math';
 import 'package:ppang_juseyo/pages/transaksi_page.dart';
 import 'package:ppang_juseyo/models/selected_product.dart';
 
@@ -17,14 +18,14 @@ class MenuByCategoryPage extends StatefulWidget {
 
 class Product {
   final String id;
-  final String product;
+  final String name;
   final double price;
-  final String qty;
+  final int qty;
   final String image;
 
   Product({
     required this.id,
-    required this.product,
+    required this.name,
     required this.price,
     required this.qty,
     required this.image,
@@ -32,11 +33,11 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      id: json['id'],
-      product: json['product'],
-      price: double.parse(json['price']),
-      qty: json['qty'],
-      image: json['image'],
+      id: json['id'] ?? '',
+      name: json['name'] ?? '',
+      price: json['price'] != null ? double.parse(json['price']) : 0.0,
+      qty: Random().nextInt(100) + 1,
+      image: json['image'] ?? '',
     );
   }
 }
@@ -58,11 +59,10 @@ class _MenuByCategoryPageState extends State<MenuByCategoryPage> {
 
   Future<List<Product>> fetchProductsByCategory(String categoryId) async {
     final response = await http.get(Uri.parse(
-        'https://ppangjuseyo.agsa.site/api/transaction.php?id=$categoryId'));
+        'https://ppangjuseyo.agsa.site/api/product/get?category=$categoryId'));
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> data = json.decode(response.body);
-      List<dynamic> productsJson = data['detail'];
+      List<dynamic> productsJson = json.decode(response.body);
       List<Product> products =
           productsJson.map((json) => Product.fromJson(json)).toList();
       return products;
@@ -149,6 +149,11 @@ class _MenuByCategoryPageState extends State<MenuByCategoryPage> {
                                           child: Image.network(
                                             products[index].image,
                                             fit: BoxFit.cover,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              // Fallback widget if image loading fails
+                                              return Icon(Icons.error);
+                                            },
                                           ),
                                         ),
                                       ),
@@ -161,7 +166,7 @@ class _MenuByCategoryPageState extends State<MenuByCategoryPage> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              products[index].product,
+                                              products[index].name,
                                               style: TextStyle(fontSize: 18),
                                             ),
                                             SizedBox(height: 4.0),
@@ -176,7 +181,9 @@ class _MenuByCategoryPageState extends State<MenuByCategoryPage> {
                                                 SizedBox(width: 20.0),
                                                 Icon(Icons.inventory),
                                                 SizedBox(width: 5.0),
-                                                Text(products[index].qty),
+                                                Text(products[index]
+                                                    .qty
+                                                    .toString()),
                                               ],
                                             ),
                                             SizedBox(height: 4.0),
@@ -287,7 +294,7 @@ class _MenuByCategoryPageState extends State<MenuByCategoryPage> {
                       selectedProducts.add(
                         SelectedProduct(
                           image: products[i].image,
-                          product: products[i].product,
+                          product: products[i].name,
                           qty: productCounts[i],
                           price: products[i].price,
                         ),
