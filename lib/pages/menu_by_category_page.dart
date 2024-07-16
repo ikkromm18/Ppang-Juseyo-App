@@ -167,7 +167,7 @@ class _MenuByCategoryPageState extends State<MenuByCategoryPage> {
                                           children: [
                                             Text(
                                               products[index].name,
-                                              style: TextStyle(fontSize: 18),
+                                              style: TextStyle(fontSize: 16),
                                             ),
                                             SizedBox(height: 4.0),
                                             Row(

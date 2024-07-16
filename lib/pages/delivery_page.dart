@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ppang_juseyo/pages/pesanan_selesai_page.dart';
 
 class DeliveryPage extends StatefulWidget {
   const DeliveryPage({super.key});
@@ -228,7 +229,12 @@ class _DeliveryPageState extends State<DeliveryPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xffac7c7c),
         onPressed: () {
-          // Action to be performed when the button is pressed
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PesananSelesaiPage(),
+            ),
+          );
         },
         child: Icon(
           Icons.arrow_forward,
