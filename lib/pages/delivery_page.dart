@@ -1,14 +1,87 @@
 import 'package:flutter/material.dart';
 import 'package:ppang_juseyo/pages/pesanan_selesai_page.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:ppang_juseyo/models/selected_product.dart';
 
 class DeliveryPage extends StatefulWidget {
-  const DeliveryPage({super.key});
+  final List<SelectedProduct>
+      selectedProducts; //tolong perbaiki kode agar SelectedProduct tidak error
+  final String paymentMethod;
+
+  const DeliveryPage({
+    super.key,
+    required this.selectedProducts,
+    required this.paymentMethod,
+  });
 
   @override
   State<DeliveryPage> createState() => _DeliveryPageState();
 }
 
 class _DeliveryPageState extends State<DeliveryPage> {
+  Future<void> _completeTransaction() async {
+    final url = 'https://ppangjuseyo.agsa.site/api/transaction.php';
+
+    // Menghitung subtotal dari selectedProducts
+    double subtotal = widget.selectedProducts.fold(
+      0.0,
+      (sum, product) =>
+          sum +
+          (product.qty *
+              product
+                  .price), // //tolong perbaiki kode agar qty * price tidak error
+    );
+
+    final headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final body = jsonEncode({
+      'id': '1',
+      'date': '11-07-2024',
+      'subtotal': subtotal.toString(),
+      'payment': widget.paymentMethod,
+      'status': 'Selesai',
+    });
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        // Jika server merespons dengan status 200 OK
+        print('Transaksi selesai');
+        // Navigasi ke halaman Pesanan Selesai
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PesananSelesaiPage(),
+          ),
+        );
+      } else {
+        // Jika server merespons dengan status yang berbeda
+        print('Gagal menyelesaikan transaksi');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Gagal menyelesaikan transaksi.'),
+          ),
+        );
+      }
+    } catch (e) {
+      // Menangani kesalahan yang mungkin terjadi
+      print('Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Terjadi kesalahan.'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -228,14 +301,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xffac7c7c),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PesananSelesaiPage(),
-            ),
-          );
-        },
+        onPressed: _completeTransaction,
         child: Icon(
           Icons.arrow_forward,
           color: Colors.white,

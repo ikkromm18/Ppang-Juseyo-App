@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ppang_juseyo/pages/user/diantar_page.dart';
 import 'account_page.dart';
 import 'history_page.dart';
+import 'package:ppang_juseyo/pages/login_page.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key});
@@ -10,6 +12,13 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
+  void _logOut() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +111,12 @@ class _UserPageState extends State<UserPage> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0),
             ),
             trailing: Icon(Icons.chevron_right),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DiantarPage()),
+              );
+            },
           ),
           Divider(),
           ListTile(
@@ -127,7 +141,7 @@ class _UserPageState extends State<UserPage> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _logOut,
                     child: Text(
                       'Log Out',
                       style: TextStyle(

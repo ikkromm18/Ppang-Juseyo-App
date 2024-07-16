@@ -107,7 +107,6 @@ class TransaksiPage extends StatelessWidget {
                       horizontal: 20.0, vertical: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Row(
                         children: [
@@ -128,61 +127,37 @@ class TransaksiPage extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            child: Text("Subtotal untuk Produk"),
-                          ),
-                          SizedBox(width: 30.0),
-                          Container(
-                            child: Text("Rp $subtotal"),
-                          ),
+                          Text("Subtotal untuk Produk"),
+                          Text("Rp $subtotal"),
                         ],
                       ),
                       SizedBox(height: 4.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            child: Text("Ongkos Pengiriman"),
-                          ),
-                          SizedBox(width: 30.0),
-                          Container(
-                            child: Text("Rp $shippingCost"),
-                          ),
+                          Text("Ongkos Pengiriman"),
+                          Text("Rp $shippingCost"),
                         ],
                       ),
                       SizedBox(height: 4.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            child: Text("Diskon Pengiriman"),
-                          ),
-                          SizedBox(width: 30.0),
-                          Container(
-                            child: Text("Rp $discount"),
-                          ),
+                          Text("Diskon Pengiriman"),
+                          Text("Rp $discount"),
                         ],
                       ),
                       SizedBox(height: 20.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            child: Text(
-                              "Total Pembayaran",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                          Text(
+                            "Total Pembayaran",
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(width: 30.0),
-                          Container(
-                            child: Text(
-                              "Rp $totalPayment",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                          Text(
+                            "Rp $totalPayment",
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -207,7 +182,9 @@ class TransaksiPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => OpsiPembayaranPage()),
+                              builder: (context) => OpsiPembayaranPage(
+                                    selectedProducts: selectedProducts,
+                                  )),
                         );
                       },
                       child: Text(
@@ -227,7 +204,6 @@ class TransaksiPage extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Handle Batal action
                         Navigator.pop(context);
                       },
                       child: Text(

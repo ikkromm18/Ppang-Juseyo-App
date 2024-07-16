@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ppang_juseyo/models/selected_product.dart'; // Pastikan model ini diimpor dengan benar
 import 'package:ppang_juseyo/pages/delivery_page.dart';
 
 class OpsiPembayaranPage extends StatefulWidget {
-  const OpsiPembayaranPage({super.key});
+  final List<SelectedProduct> selectedProducts;
+
+  const OpsiPembayaranPage({super.key, required this.selectedProducts});
 
   @override
   State<OpsiPembayaranPage> createState() => _OpsiPembayaranPageState();
@@ -15,7 +18,7 @@ class _OpsiPembayaranPageState extends State<OpsiPembayaranPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(""),
+        title: Text("Opsi Pembayaran"),
       ),
       body: Padding(
         padding: EdgeInsets.all(15.0),
@@ -67,7 +70,7 @@ class _OpsiPembayaranPageState extends State<OpsiPembayaranPage> {
                         ),
                       ],
                     ),
-                    value: 'cod',
+                    value: 'COD',
                     groupValue: _selectedPaymentMethod,
                     onChanged: (value) {
                       setState(() {
@@ -84,12 +87,12 @@ class _OpsiPembayaranPageState extends State<OpsiPembayaranPage> {
                         ),
                         SizedBox(width: 20.0),
                         Text(
-                          "Dana",
+                          "DANA",
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
                     ),
-                    value: 'dana',
+                    value: 'DANA',
                     groupValue: _selectedPaymentMethod,
                     onChanged: (value) {
                       setState(() {
@@ -101,6 +104,9 @@ class _OpsiPembayaranPageState extends State<OpsiPembayaranPage> {
               ),
             ),
             SizedBox(
+              height: 10.0,
+            ),
+            SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
@@ -108,24 +114,20 @@ class _OpsiPembayaranPageState extends State<OpsiPembayaranPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DeliveryPage(),
+                        builder: (context) => DeliveryPage(
+                          selectedProducts: widget.selectedProducts,
+                          paymentMethod: _selectedPaymentMethod!,
+                        ),
                       ),
                     );
                   } else {
-                    // Tampilkan pesan jika metode pembayaran belum dipilih
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Silakan pilih metode pembayaran.'),
-                      ),
-                    );
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Silakan pilih metode pembayaran')));
                   }
                 },
                 child: Text(
-                  'Bayar Sekarang',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  'Selanjutnya',
+                  style: TextStyle(color: Colors.white),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xffac7c7c),
