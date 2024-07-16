@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:ppang_juseyo/pages/user/user_page.dart';
 import 'dart:convert';
 
 import 'menu_by_category_page.dart';
@@ -91,7 +92,12 @@ class _MenuPageState extends State<MenuPage> {
                         ),
                       ),
                       onPressed: () {
-                        // Handle user icon tap event
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserPage(),
+                          ),
+                        );
                       },
                     ),
                   ],
