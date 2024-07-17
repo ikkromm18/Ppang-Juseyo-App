@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ppang_juseyo/pages/admin/admin_page.dart';
 import 'package:ppang_juseyo/pages/login_page.dart';
 
 class LandingPage extends StatefulWidget {
@@ -66,7 +67,26 @@ class _LandingPageState extends State<LandingPage> {
                             fixedSize: Size(300, 40),
                             backgroundColor: Color(int.parse('0xffd9d9d9')))),
                     SizedBox(
-                      height: 220,
+                      height: 15.0,
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AdminPage()),
+                          );
+                        },
+                        child: const Text(
+                          'Login Admin',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.black),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: Size(300, 40),
+                            backgroundColor: Color(int.parse('0xffd9d9d9')))),
+                    SizedBox(
+                      height: 150,
                     ),
                     Center(
                       child: Text(
