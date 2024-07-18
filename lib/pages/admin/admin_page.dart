@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:math';
 import 'package:ppang_juseyo/pages/admin/create_product_page.dart';
 import 'package:ppang_juseyo/pages/admin/edit_product_page.dart'; // Pastikan path benar
 import 'package:ppang_juseyo/models/product.dart'; // Import class Product
@@ -22,8 +23,19 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   Future<List<Product>> fetchProducts() async {
-    final response = await http
-        .get(Uri.parse('https://ppangjuseyo.agsa.site/api/product/get'));
+    // enpoint get all product menyimpan cache dan tidak bisa direfress secara otomatis
+    // fungsi ini dibuat untuk menambahkan random parameter di endpoint get
+    // sehingga fungsinya seperti mengganti url endpoint tapi fungsinya sama
+    const _chars =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    Random _rnd = Random();
+    String getRandomString(int length) =>
+        String.fromCharCodes(Iterable.generate(
+            length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+    String random = getRandomString(5);
+
+    final response = await http.get(
+        Uri.parse('https://ppangjuseyo.agsa.site/api/product/get?$random'));
 
     if (response.statusCode == 200) {
       List<dynamic> productsJson = json.decode(response.body);

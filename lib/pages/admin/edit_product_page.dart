@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:ppang_juseyo/models/product.dart'; // Sesuaikan dengan path file
+import 'package:ppang_juseyo/models/product.dart';
+import 'package:ppang_juseyo/pages/admin/upload-image.dart'; // Sesuaikan dengan path file
 
 class EditProductPage extends StatefulWidget {
   final Product product;
@@ -17,16 +18,18 @@ class _EditProductPageState extends State<EditProductPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
+  late String product_id;
 
   @override
   void initState() {
     super.initState();
+    product_id = widget.product.id;
     _nameController.text = widget.product.name;
     _priceController.text = widget.product.price.toString();
   }
 
   Future<void> _updateProduct() async {
-    final response = await http.post(
+    final response = await http.put(
       Uri.parse('https://ppangjuseyo.agsa.site/api/product/update.php'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -134,6 +137,30 @@ class _EditProductPageState extends State<EditProductPage> {
                       ),
                       child: Text(
                         'Update Product',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(height: 50),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                UploadImageProductPage(product_id: product_id),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 63, 63, 63),
+                        padding: EdgeInsets.symmetric(vertical: 15.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      child: Text(
+                        'Ganti Foto Produk',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.white),
                       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:ppang_juseyo/pages/admin/admin_page.dart';
 
 class CreateProductPage extends StatefulWidget {
   @override
@@ -34,7 +35,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
       }),
     );
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Product created successfully')),
       );
@@ -43,6 +44,10 @@ class _CreateProductPageState extends State<CreateProductPage> {
       setState(() {
         _selectedCategory = null;
       });
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => AdminPage()),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to create product')),
