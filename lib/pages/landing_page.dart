@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ppang_juseyo/pages/admin/admin_page.dart';
+import 'package:ppang_juseyo/pages/admin/login_admin_page.dart';
 import 'package:ppang_juseyo/pages/login_page.dart';
 
 class LandingPage extends StatefulWidget {
@@ -74,11 +74,11 @@ class _LandingPageState extends State<LandingPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AdminPage()),
+                                builder: (context) => LoginAdminPage()),
                           );
                         },
                         child: const Text(
-                          'Login Admin',
+                          'Masuk Ke Halaman Admin',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.black),
                         ),

@@ -1,55 +1,34 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
-import 'package:ppang_juseyo/pages/menu_page.dart';
-import 'package:ppang_juseyo/pages/register_page.dart';
+import 'package:ppang_juseyo/pages/admin/admin_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class LoginAdminPage extends StatefulWidget {
+  const LoginAdminPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginAdminPage> createState() => _LoginAdminPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginAdminPageState extends State<LoginAdminPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> _login() async {
-    if (_formKey.currentState!.validate()) {
-      final response = await http.post(
-        Uri.parse('https://ppangjuseyo.agsa.site/api/auth/login.php'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'email': _emailController.text,
-          'password': _passwordController.text,
-        }),
-      );
+  void _login() {
+    if (_formKey.currentState?.validate() ?? false) {
+      String email = _emailController.text;
+      String password = _passwordController.text;
 
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-        if (responseData['login']) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Login Berhasil')),
-          );
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => MenuPage()),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content:
-                    Text('Login gagal, periksa email atau password anda.')),
-          );
-        }
+      if (email == 'admin@mail.com' && password == 'admin#123') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AdminPage()),
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Server error: ${response.statusCode}')),
+          SnackBar(
+            content: Text('Invalid email or password'),
+          ),
         );
       }
     }
@@ -163,48 +142,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
 
                         SizedBox(height: 50),
-
-                        Center(
-                          child: Text(
-                            "OR",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-
-                        SizedBox(height: 40),
-
-                        RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Belum punya akun? ',
-                                style: TextStyle(fontWeight: FontWeight.normal),
-                              ),
-                              WidgetSpan(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => RegisterPage(),
-                                      ),
-                                    );
-                                  },
-                                  child: Text(
-                                    'Sign Up',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                      decoration: TextDecoration.underline,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ],
                     ),
                   ),
