@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:math';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -19,8 +20,19 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Future<void> fetchHistory() async {
+    // enpoint get all product menyimpan cache dan tidak bisa direfress secara otomatis
+    // fungsi ini dibuat untuk menambahkan random parameter di endpoint get
+    // sehingga fungsinya seperti mengganti url endpoint tapi fungsinya sama
+    const _chars =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    Random _rnd = Random();
+    String getRandomString(int length) =>
+        String.fromCharCodes(Iterable.generate(
+            length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+    String random = getRandomString(5);
+
     final response = await http.get(
-      Uri.parse('https://ppangjuseyo.agsa.site/api/transaction.php'),
+      Uri.parse('https://ppangjuseyo.agsa.site/api/transaction.php?$random'),
     );
 
     if (response.statusCode == 200) {
